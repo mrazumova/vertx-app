@@ -7,7 +7,7 @@ public class UserStorage {
 
     private Map<Integer, User> userList = new HashMap<>();
 
-    UserStorage(){
+    UserStorage() {
         userList.put(1, new User(1, "firstUser", 18));
         userList.put(2, new User(2, "secondUser", 39));
         userList.put(3, new User(3, "thirdUser", 43));
@@ -20,31 +20,32 @@ public class UserStorage {
         userList.put(10, new User(10, "tenthUser", 74));
     }
 
-    public void create(int id, String nick, int age) {
-        User user = new User(id, nick, age);
-        userList.put(id, user);
+    public Map<Integer, User> getAll() {
+        return userList;
     }
 
-    public User read(int id){
+    public boolean create(int id, String nick, int age) {
+        User user = new User(id, nick, age);
+        if (userList.containsKey(id))
+            return false;
+        userList.put(id, user);
+        return true;
+    }
+
+    public User read(int id) {
         return userList.get(id);
     }
 
-    public void update(int id, String nick) {
-        User user = userList.get(id);
-        user.setNickname(nick);
-    }
-
-    public void update(int id, int age) {
-        User user = userList.get(id);
-        user.setAge(age);
-    }
-    public void update(int id, String nick, int age) {
+    public boolean update(int id, String nick, int age) {
+        if (!userList.containsKey(id))
+            return false;
         User user = userList.get(id);
         user.setNickname(nick);
         user.setAge(age);
+        return true;
     }
 
-    public void delete(int id) {
-        userList.remove(id);
+    public boolean delete(int id) {
+        return userList.remove(id) != null;
     }
 }
